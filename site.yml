@@ -1,0 +1,6 @@
+---
+# The main openstack site deployment playbook
+
+- hosts: openstack-ubu-controller
+  roles:
+   - controller
