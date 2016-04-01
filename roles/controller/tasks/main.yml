@@ -61,16 +61,16 @@
     chdir=/root/astara-neutron
 
 - name: set the core_plugins, service_plugins, etc. for astara
-  shell: sed -i 's|\[DEFAULT\]|\[DEFAULT\]\ncore_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin\nservice_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions/\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astata/core.sed
-    creates=/etc/astata/core.sed
+  shell: sed -i 's|\[DEFAULT\]|\[DEFAULT\]\ncore_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin\nservice_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions/\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed
+    creates=/etc/astara/core.sed
 
 - name: set up port security
-  shell: sed -i 's/\[ML2\]/\[ML2\]\nextension_drivers = port_security\nl2_population = True\n/g' /etc/neutron/plugins/ml2/ml2_conf.ini; touch /etc/astata/ext.sed
+  shell: sed -i 's/\[ML2\]/\[ML2\]\nextension_drivers = port_security\nl2_population = True\n/g' /etc/neutron/plugins/ml2/ml2_conf.ini; touch /etc/astara/ext.sed
     creates=/etc/astata/ext.sed
 
 - name: set ipv6 in nova conf
-  shell: sed -i  's/\[DEFAULT\]/\[DEFAULT\]\nuse_ipv6=True\nservice_metadata_proxy = True\n/g' /etc/nova/nova.conf; touch /etc/astata/ipv6.sed
-    creates=/etc/astata/ipv6.sed
+  shell: sed -i  's/\[DEFAULT\]/\[DEFAULT\]\nuse_ipv6=True\nservice_metadata_proxy = True\n/g' /etc/nova/nova.conf; touch /etc/astara/ipv6.sed
+    creates=/etc/astara/ipv6.sed
 
 #- name: fix the nova policy.json file
 #  shell: sed -i  's/"network:attach_external_network": "rule:admin_api"/"network:attach_external_network": "rule:admin_api or role:service"/g' /etc/nova/policy.json; touch /etc/astata/policy.sed
@@ -115,7 +115,7 @@
       username: "{{ as_username }}"
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
-  register: "{{ as_mgmt_name }}"
+  register: "{{ as_mgmt_net_name }}"
 
 - name: Create the management subnet
   os_subnet:
