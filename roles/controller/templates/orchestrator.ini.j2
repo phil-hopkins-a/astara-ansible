@@ -4,7 +4,7 @@
 
 admin_user = {{ lookup('ini', 'nova_admin_username section=DEFAULT file=/etc/neutron/neutron.conf') }}
 admin_password = {{ lookup('ini', 'nova_admin_password section=DEFAULT file=/etc/neutron/neutron.conf') }}
-admin_tenant_name = {{ lookup('ini', nova_admin_tenant_name section=DEFAULT file=/etc/neutron/neutron.conf') }}
+admin_tenant_name = {{ lookup('ini', 'nova_admin_tenant_name section=DEFAULT file=/etc/neutron/neutron.conf') }}
 auth_url = {{ lookup('ini', 'auth_uri section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
 auth_strategy = keystone
 #auth_region = <None>)
@@ -12,8 +12,8 @@ auth_strategy = keystone
 ssh_public_key = {{ as_ssh_public_key }}
 management_network_id = {{ mgmt.network.id }}
 external_network_id = {{ public.network.id }}
-management_subnet_id = {{ mgmt.subnet.id }}
-external_subnet_id = {{ public.subnet.id }}
+management_subnet_id = {{ mgmt_subnet.id }}
+external_subnet_id = {{ public_subnet.id }}
 management_prefix = {{ as_mgmt_prefix }}
 external_prefix = {{ as_external_prefix }}
 #astara_mgt_service_port = 5000
@@ -58,19 +58,10 @@ root_helper = sudo astara-rootwrap /etc/astara/rootwrap.conf
 connection = mysql://astara:{{ astara_db_pass }}@{{ controller_mgmt_ip }}/astara
 
 [keystone_authtoken]
-auth_version = {{ as_auth_version }}
-#auth_admin_prefix =
-auth_host = {{ controller_mgmt_ip }}
-#auth_port = 35357
-auth_protocol = {{ as_auth_protocol }}
-identity_uri = {{ lookup('ini', 'identity_uri section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
-admin_user = {{ lookup('ini', 'admin_user section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
-admin_password = {{ lookup('ini', 'admin_password section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
-admin_tenant_name = {{ lookup('ini', 'admin_tenant_name section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
-#auth_section = <None>
+auth_version = 3.0
 auth_uri = {{ lookup('ini', 'auth_uri section=KEYSTONE_AUTHTOKEN file=/etc/neutron/neutron.conf') }}
-#auth_url = http://{{ controller_mgmt_ip }}:35357
-
+auth_url = http://{{ controller_mgmt_ip }}:35357
+auth_plugin = password
 auth_type = password
 project_domain_id = default
 user_domain_id = default

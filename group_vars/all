@@ -38,7 +38,7 @@ as_interface_driver: astara.common.linux.interface.BridgeInterfaceDriver
 #For OpenvSwitch
 #as_interface_driver: astara.common.linux.interface.OVSInterfaceDriver
 
-as_enabled_drivers: router,loadbalancer
+as_enabled_drivers: router
 
 as_provider_rules_path: /etc/astara/provider_rules.json
 
@@ -70,4 +70,4 @@ as_identity_uri: http://localhost:35357/
 as_auth_type: password
 #auth_section = <None>
 
-as_neutron_pass: ?????
+as_neutron_pass: neutron
