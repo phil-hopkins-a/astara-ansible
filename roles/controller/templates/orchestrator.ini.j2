@@ -1,4 +1,4 @@
-{% set controller_mgmt_ip = hostvars[groups['openstack-ubu-controller'][0]]['ansible_eth1'].ipv4.address %}
+{% set controller_mgmt_ip = hostvars[groups['openstack-ubu-controller'][0]]['ansible_ens4'].ipv4.address %}
 
 [DEFAULT]
 

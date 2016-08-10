@@ -1,9 +1,12 @@
 
+ubuntu: u1604
+
 #set the version
 #openstack_version: "stable/liberty"
+openstack_version: "stable/mitaka"
 
 #For installing from trunk
-openstack_version: "HEAD"
+#openstack_version: "HEAD"
 
 # Auth parameters used to create network, ...
 # From the adminrc file
@@ -12,8 +15,8 @@ as_username: demoadmin
 as_password: secrete
 as_project_name: demo
 
-as_rabbit_userid: guest
-as_rabbit_password: guest
+as_rabbit_userid: testuser
+as_rabbit_password: secrete
 as_rabbit_hosts: 10.0.1.3
 
 as_log_file: /var/log/astara/orchestrator.log
@@ -31,7 +34,7 @@ as_external_prefix: 172.16.0.0/24
 as_external_net_id: public.network.id
 as_external_subnet_id: public.subnet.id
 
-as_ssh_public_key: /etc/astara/id.pub
+as_ssh_public_key: /etc/astara/id_rsa.pub
 
 #For Linuxbridge
 as_interface_driver: astara.common.linux.interface.BridgeInterfaceDriver

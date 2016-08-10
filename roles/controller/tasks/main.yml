@@ -96,14 +96,42 @@
 - name: move the neutron l3 upstart files out of the way
   shell: mv /etc/init/neutron-l3-agent.conf /root
   ignore_errors: yes
+  when: ubuntu == "u1404"
 
-- name: move the neutron l3 upstart files out of the way
+- name: move the neutron dhcp upstart files out of the way
   shell: mv /etc/init/neutron-dhcp-agent.conf /root
   ignore_errors: yes
+  when: ubuntu == "u1404"
 
-- name: move the neutron l3 upstart files out of the way
+- name: move the neutron metadata upstart files out of the way
   shell: mv /etc/init/neutron-metadata-agent.conf /root
   ignore_errors: yes
+  when: ubuntu == "u1404"
+
+- name: move the neutron l3 agent upstart files out of the way
+  shell: mv =/lib/systemd/system/neutron-l3-agent.service /root
+  ignore_errors: yes
+  when: ubuntu == "u1604"
+
+- name: move the neutron dhcp agent upstart files out of the way
+  shell: mv =/lib/systemd/system/neutron-dhcp-agent.service /root
+  ignore_errors: yes
+  when: ubuntu == "u1604"
+
+- name: move the neutron metadata agent upstart files out of the way
+  shell: mv =/lib/systemd/system/neutron-metadata-agent.service /root
+  ignore_errors: yes
+  when: ubuntu == "u1604"
+
+- name: Copy the astara orchestrator systemd file
+  copy: src=astara-orchestrator.service dest=/lib/systemd/system/astara-orchestrator.service
+  notify: restart neutron
+  when: ubuntu == "u1604"
+
+- name: Copy the astara orchestrator systemd init file
+  copy: src=astara-orchestrator dest=/etc/init.d/astara-orchestrator mode=755
+  notify: restart neutron
+  when: ubuntu == "u1604"
 
 - name: Create the management network
   os_network:
@@ -224,6 +252,7 @@
 
 - name: create the astara upstart file
   copy: src=astara_init dest=/etc/init/astara.conf
+  when: ubuntu == "u1404"
 
 - name: start the astara service
   service: name=astara state=started enabled=yes
