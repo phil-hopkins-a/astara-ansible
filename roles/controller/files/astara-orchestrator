@@ -17,7 +17,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
 DESC="OpenStack Astara Orchestrator"
 PROJECT_NAME=astara
-RUN_NAME=orchectrator
+RUN_NAME=orchestrator
 NAME=${PROJECT_NAME}-${RUN_NAME}
 # --config-file=/etc/neutron/neutron.conf will be appended
 # to DAEMON_ARGS later by openstack-pkg-tools

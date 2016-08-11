@@ -196,7 +196,7 @@
   pip: name=PyMySQL
 
 - name: Setup DB for astara
-  shell: creates=/var/lib/mysql/astara mysql -u root -p{{ mysql_root_pass }} -e "CREATE DATABASE astara;"
+  shell: mysql -u root -p{{ mysql_root_pass }} -e "CREATE DATABASE astara;"
          
 - name: Give right to astara user.
   mysql_user: login_user=root login_password={{ mysql_root_pass }} name=astara password={{ astara_db_pass }} priv=*.*:ALL host='%' state=present
