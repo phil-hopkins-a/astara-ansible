@@ -139,6 +139,7 @@
    - neutron-l3-agent
    - neutron-dhcp-agent
    - neutron-metadata-agent
+  ignore_errors: True
 
 - name: move the neutron l3 upstart files out of the way
   shell: mv /etc/init/neutron-l3-agent.conf /root
@@ -155,17 +156,17 @@
   ignore_errors: yes
   when: ubuntu == "u1404"
 
-- name: move the neutron l3 agent upstart files out of the way
+- name: move the neutron l3 agent systemd files out of the way
   shell: mv /lib/systemd/system/neutron-l3-agent.service /root
   ignore_errors: yes
   when: ubuntu == "u1604"
 
-- name: move the neutron dhcp agent upstart files out of the way
+- name: move the neutron dhcp agent systemd files out of the way
   shell: mv /lib/systemd/system/neutron-dhcp-agent.service /root
   ignore_errors: yes
   when: ubuntu == "u1604"
 
-- name: move the neutron metadata agent upstart files out of the way
+- name: move the neutron metadata agent systemd files out of the way
   shell: mv /lib/systemd/system/neutron-metadata-agent.service /root
   ignore_errors: yes
   when: ubuntu == "u1604"
