@@ -186,7 +186,7 @@
     state: present
     name: "{{ as_mgmt_net_name }}"
     external: false
-    project: demo
+#    project: "{{ as_project_name }}"
     auth:
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
