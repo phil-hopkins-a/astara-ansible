@@ -77,31 +77,37 @@
 - name: set the service_plugins, and api_extensions_path, notification_driver for astara
   shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed
     creates=/etc/astara/service.sed
+  ignore_errors: true
   when: $api_extensions_result == False and $notification_driver_result == False
 
 - name: set the service_plugins for astara
   shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed
     creates=/etc/astara/service.sed
+  ignore_errors: true
   when: $api_extensions_result == True or $notification_driver_result == True
 
 - name: set api_extensions_path for astara, when api_extensions_path was set.
   shell: sed -i 's|api_extensions_path =.*|api_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
     creates=/etc/astara/api.sed
+  ignore_errors: true
   when: $api_extensions_result == True and $notification_driver_result == True
 
 - name: set notification_driver for astara, when notification_driver is set.
   shell: sed -i 's|notification_driver  =.*|notification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/notif.sed
     creates=/etc/astara/notif.sed
+  ignore_errors: true
   when: $api_extensions_result == True and $notification_driver_result == True
 
 - name: set api_extensions_path for astara, when api_extensions_path was set and notification_driver was nt set.
   shell: sed -i 's|api_extensions_path =.*|api_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
     creates=/etc/astara/api.sed
+  ignore_errors: true
   when: $api_extensions_result == True and $notification_driver_result == False
 
 - name: set api_extensions_path for astara, when notification_driver was set and api_extensions_path was not set.
   shell: sed -i 's|notification_driver  =.*|notification_driver  = neutron.openstack.common.notifier.rpc_notifier\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
     creates=/etc/astara/api.sed
+  ignore_errors: true
   when: $api_extensions_result == False and $notification_driver_result == True
 
 - name: set up port security
