@@ -190,7 +190,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: "{{ as_mgmt_net_name }}"
 
 - name: Create the management subnet
@@ -206,7 +206,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: "{{ as_mgmt_subnet_name }}"
 
 - name: Create the external shared network
@@ -219,7 +219,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: "{{ as_external_net_name }}"
 
 - name: create the external shared subnet
@@ -234,13 +234,13 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: "{{ as_external_subnet_name }}"
 
 - name: copy the ssh keys
   copy: src=/root/.ssh/id_rsa.pub dest=/etc/astara/ owner=root group=root mode=600
 
-- name: Install a pip dependency
+- name: Install a pip dependency for mysql
   pip: name=PyMySQL
 
 - name: Setup DB for astara
@@ -264,7 +264,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
 
 - name: Get the router image id
   os_image_facts:
@@ -273,7 +273,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: astara_router
 
 - name: create a flavor for the astara router image
@@ -288,7 +288,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project_name: "{{ as_project_name }}"
+      project: "{{ as_project_name }}"
   register: m1_astara
 
 - name: copy the orchestrator.ini file
