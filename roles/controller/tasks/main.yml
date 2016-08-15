@@ -74,7 +74,7 @@
   register: notification_driver_result
   ignore_errors: true
 
-- name: set the service_plugins, add api_extensions_path, notification_driver for astara
+- name: set the service_plugins, and api_extensions_path, notification_driver for astara
   shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed
     creates=/etc/astara/service.sed
   when: $api_extensions_result == False and $notification_driver_result == False
