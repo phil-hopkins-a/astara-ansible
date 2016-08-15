@@ -190,7 +190,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: "{{ as_mgmt_net_name }}"
 
 - name: Create the management subnet
