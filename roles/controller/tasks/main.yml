@@ -186,6 +186,7 @@
     state: present
     name: "{{ as_mgmt_net_name }}"
     external: false
+    project: demo
     auth:
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
@@ -206,7 +207,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: "{{ as_mgmt_subnet_name }}"
 
 - name: Create the external shared network
@@ -219,7 +220,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: "{{ as_external_net_name }}"
 
 - name: create the external shared subnet
@@ -234,7 +235,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: "{{ as_external_subnet_name }}"
 
 - name: copy the ssh keys
