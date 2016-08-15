@@ -36,6 +36,9 @@ as_external_subnet_id: public.subnet.id
 
 as_ssh_public_key: /etc/astara/id_rsa.pub
 
+ml2_environment = linuxbridge
+#ml2_environment = openvswitch
+
 #For Linuxbridge
 as_interface_driver: astara.common.linux.interface.BridgeInterfaceDriver
 #For OpenvSwitch

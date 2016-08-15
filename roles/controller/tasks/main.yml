@@ -60,9 +60,49 @@
   shell: pip install .
     chdir=/root/astara-neutron
 
-- name: set the core_plugins, service_plugins, etc. for astara
-  shell: sed -i 's|\[DEFAULT\]|\[DEFAULT\]\ncore_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin\nservice_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions/\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed
+- name: set the core_plugins for astara
+  shell: sed -i 's|core_plugins = .*|core_plugins = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed
     creates=/etc/astara/core.sed
+
+- name: Test for existence of api_extensions_path
+  shell: /usr/bin/grep "api_extensions_path" /etc/neutron/neutron.conf
+  register: api_extensions_result
+  ignore_errors: true
+
+- name: Test for extenstions_path
+  shell: /usr/bin/grep "notification_driver" /etc/neutron/neutron.conf
+  register: notification_driver_result
+  ignore_errors: true
+
+- name: set the service_plugins, add api_extensions_path, notification_driver for astara
+  shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed
+    creates=/etc/astara/service.sed
+  when: $api_extensions_result == False and $notification_driver_result == False
+
+- name: set the service_plugins for astara
+  shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed
+    creates=/etc/astara/service.sed
+  when: $api_extensions_result == True or $notification_driver_result == True
+
+- name: set api_extensions_path for astara, when api_extensions_path was set.
+  shell: sed -i 's|api_extensions_path =.*|api_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
+    creates=/etc/astara/api.sed
+  when: $api_extensions_result == True and $notification_driver_result == True
+
+- name: set notification_driver for astara, when notification_driver is set.
+  shell: sed -i 's|notification_driver  =.*|notification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/notif.sed
+    creates=/etc/astara/notif.sed
+  when: $api_extensions_result == True and $notification_driver_result == True
+
+- name: set api_extensions_path for astara, when api_extensions_path was set and notification_driver was nt set.
+  shell: sed -i 's|api_extensions_path =.*|api_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
+    creates=/etc/astara/api.sed
+  when: $api_extensions_result == True and $notification_driver_result == False
+
+- name: set api_extensions_path for astara, when notification_driver was set and api_extensions_path was not set.
+  shell: sed -i 's|notification_driver  =.*|notification_driver  = neutron.openstack.common.notifier.rpc_notifier\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions|g' /etc/neutron/neutron.conf; touch /etc/astara/api.sed
+    creates=/etc/astara/api.sed
+  when: $api_extensions_result == False and $notification_driver_result == True
 
 - name: set up port security
   shell: sed -i 's/\[ML2\]/\[ML2\]\nextension_drivers = port_security\nl2_population = True\n/g' /etc/neutron/plugins/ml2/ml2_conf.ini; touch /etc/astara/ext.sed
@@ -81,7 +121,15 @@
   with_items:
    - nova-api
    - neutron-server
-   - neutron-linuxbridge-agent
+
+- name: Start the openvswitch neutron services
+  service: name=neutron-openvswitch-agent state=started enabled=yes
+  when: ml2_environment == 'openvswitch'
+
+- name: Start the linuxbridge neutron services
+  service: name=neutron-linuxbridge-agent state=started enabled=yes
+  when: ml2_environment == 'linuxbridge'
+
 
 - name: short delay to allow the services to get started
   shell: sleep 20
@@ -201,10 +249,6 @@
 - name: Give right to astara user.
   mysql_user: login_user=root login_password={{ mysql_root_pass }} name=astara password={{ astara_db_pass }} priv=*.*:ALL host='%' state=present
 
-- name: create the astara db tables
-  shell: /usr/local/bin/astara-dbsync --config-file /etc/astara/orchestrator.ini upgrade; touch /etc/astara/db.synced
-         creates=/etc/astara/db.synced
-
 - name: build the astara appliance
   shell: ELEMENTS_PATH=diskimage-builder/elements DIB_RELEASE=jessie DIB_EXTLINUX=1 disk-image-create debian vm astara -o astara
     chdir=/root/astara-appliance
@@ -249,6 +293,10 @@
 
 - name: copy the orchestrator.ini file
   template: src=orchestrator.ini.j2  dest=/etc/astara/orchestrator.ini owner=astara group=astara
+
+- name: create the astara db tables
+  shell: /usr/local/bin/astara-dbsync --config-file /etc/astara/orchestrator.ini upgrade; touch /etc/astara/db.synced
+         creates=/etc/astara/db.synced
 
 - name: create the astara upstart file
   copy: src=astara_init dest=/etc/init/astara.conf
