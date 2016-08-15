@@ -64,7 +64,8 @@
   shell: sed -i 's|core_plugin = .*|core_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed creates=/etc/astara/core.sed
 
 - name: Test for existence of api_extensions_path
-  shell: grep "api_extensions_path" /etc/neutron/neutron.conf
+  command: grep "api_extensions_path" /etc/neutron/neutron.conf
+#  lineinfile: dest=/etc/neutron/neutron.conf regexp="api_extensions_path =.*" state=present
   register: api_extensions_result
   ignore_errors: true
 
