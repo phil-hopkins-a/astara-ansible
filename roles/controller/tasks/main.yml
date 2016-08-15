@@ -64,19 +64,19 @@
   shell: sed -i 's|core_plugin = .*|core_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed creates=/etc/astara/core.sed
 
 - name: Test for existence of api_extensions_path
-  command: grep "core_plugin" /etc/neutron/neutron.conf
+  command: grep "api_extensions_path" /etc/neutron/neutron.conf
   register: api_extensions_result
-  ignore_errors: true
+  ignore_errors: True
 
 - name: Test for extenstions_path
   shell: grep "notification_driver" /etc/neutron/neutron.conf
   register: notification_driver_result
-  ignore_errors: true
+  ignore_errors: True
 
 - name: set the service_plugins, and api_extensions_path, notification_driver for astara
   shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin\napi_extensions_path = /usr/local/lib/python2.7/dist-packages/astara_neutron/extensions\nnotification_driver  = neutron.openstack.common.notifier.rpc_notifier|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed creates=/etc/astara/service.sed
   ignore_errors: true
-  when: $api_extensions_result == 0 and $notification_driver_result == 0
+  when: api_extensions_result|failed and notification_driver_result|failed
 
 - name: set the service_plugins for astara
   shell: sed -i 's|service_plugins = .*|service_plugins = astara_neutron.plugins.ml2_neutron_plugin.L3RouterPlugin|g' /etc/neutron/neutron.conf; touch /etc/astara/service.sed creates=/etc/astara/service.sed
