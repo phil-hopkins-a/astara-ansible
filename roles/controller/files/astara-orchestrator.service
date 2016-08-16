@@ -4,13 +4,13 @@ After=mysql.service rabbitmq-server.service
 
 
 [Service]
-User=neutron
-Group=neutron
+User=astara
+Group=astara
 Type=simple
 WorkingDirectory=/var/lib/astara
 PermissionsStartOnly=true
 ExecStartPre=/bin/mkdir -p /var/lock/astara /var/log/astara /var/lib/astara
-ExecStartPre=/bin/chown neutron:neutron /var/lock/astara /var/log/astara /var/lib/astara
+ExecStartPre=/bin/chown astara:astara /var/lock/astara /var/log/astara /var/lib/astara
 ExecStart=/etc/init.d/astara-orchestrator systemd-start
 Restart=on-failure
 LimitNOFILE=65535

@@ -16,7 +16,7 @@ as_password: secrete
 as_project_name: demo
 
 as_rabbit_userid: testuser
-as_rabbit_password: secrete
+as_rabbit_password: secret
 as_rabbit_hosts: 10.0.1.3
 
 as_log_file: /var/log/astara/orchestrator.log

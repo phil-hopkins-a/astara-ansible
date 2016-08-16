@@ -239,7 +239,7 @@
   register: "{{ as_external_subnet_name }}"
 
 - name: copy the ssh keys
-  copy: src=/root/.ssh/id_rsa.pub dest=/etc/astara/ owner=root group=root mode=600
+  copy: src=/root/.ssh/id_rsa.pub dest=/etc/astara/ owner=astara group=astara mode=600
 
 - name: Install a pip dependency for mysql
   pip: name=PyMySQL
@@ -302,9 +302,9 @@
          creates=/etc/astara/db.synced
 
 - name: create the astara upstart file
-  copy: src=astara_init dest=/etc/init/astara.conf
+  copy: src=astara_init dest=/etc/init/astara-orchestrator.conf
   when: ubuntu == "u1404"
 
 - name: start the astara service
-  service: name=astara state=started enabled=yes
+  service: name=astara-orchestrator state=started enabled=yes
 
