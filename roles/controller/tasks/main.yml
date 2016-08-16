@@ -245,13 +245,13 @@
   pip: name=PyMySQL
 
 - name: Setup DB for astara
-  shell: mysql -u root -p{{ mysql_root_pass }} -e "CREATE DATABASE astara;"
+  shell: mysql -u root -p{{ mysql_root_pass }} -e "CREATE DATABASE astara;"; touch /etc/astara/db.ast creates: /etc/astara/db.ast
          
 - name: Give right to astara user.
   mysql_user: login_user=root login_password={{ mysql_root_pass }} name=astara password={{ astara_db_pass }} priv=*.*:ALL host='%' state=present
 
 - name: build the astara appliance
-  shell: ELEMENTS_PATH=diskimage-builder/elements DIB_RELEASE=jessie DIB_EXTLINUX=1 disk-image-create debian vm astara -o astara
+  shell: ELEMENTS_PATH=diskimage-builder/elements DIB_RELEASE=jessie DIB_EXTLINUX=1 disk-image-create debian vm astara -o astara; touch /root/astara-appliance/appliance.ast creates: /root/astara-appliance/appliance.ast
     chdir=/root/astara-appliance
 
 - name: Create the router image (this can also be the loadbalancer image)
@@ -265,7 +265,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
 
 - name: Get the router image id
   os_image_facts:
@@ -274,7 +274,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: astara_router
 
 - name: create a flavor for the astara router image
@@ -289,7 +289,7 @@
       auth_url: "{{ as_auth_url }}"
       username: "{{ as_username }}"
       password: "{{ as_password }}"
-      project: "{{ as_project_name }}"
+      project_name: "{{ as_project_name }}"
   register: m1_astara
 
 - name: copy the orchestrator.ini file
