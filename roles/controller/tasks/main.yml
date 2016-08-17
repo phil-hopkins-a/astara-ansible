@@ -182,6 +182,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: "{{ as_mgmt_net_name }}"
 
 - name: Create the management subnet
@@ -199,6 +201,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: "{{ as_mgmt_subnet_name }}"
 
 - name: Create the external shared network
@@ -213,6 +217,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: "{{ as_external_net_name }}"
 
 - name: create the external shared subnet
@@ -229,6 +235,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: "{{ as_external_subnet_name }}"
 
 - name: copy the ssh keys
@@ -262,6 +270,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
 
 - name: Get the router image id
   os_image_facts:
@@ -272,6 +282,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: astara_router
 
 - name: create a flavor for the astara router image
@@ -288,6 +300,8 @@
       password: "{{ as_password }}"
       project_name: "{{ as_project_name }}"
       user_domain_name: "{{ as_user_domain_name }}"
+      identity_api_version: "{{ as_identity_api_version }}"
+      region_name: "{{ as_region_name }}"
   register: m1_astara
 
 - name: copy the orchestrator.ini file
