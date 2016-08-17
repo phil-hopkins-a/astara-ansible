@@ -15,6 +15,7 @@ as_username: demoadmin
 as_password: secrete
 as_project_name: demo
 as_user_domain_name: Default
+as_project_domain_name: Default
 as_identity_api_version: 3
 as_region_name: RegionOne
 
