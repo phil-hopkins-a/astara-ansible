@@ -1,0 +1,13 @@
+---
+# Handlers for the controller plays
+
+- name: restart neutron
+  service: name={{ item }} state=restarted 
+  with_items:
+   - neutron-server
+
+- name: restart astara
+  service: name={{ item }} state=restarted 
+  with_items:
+   - astara-orchestrator
+   
