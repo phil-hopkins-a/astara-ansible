@@ -54,9 +54,14 @@
   shell: pip install .
     chdir=/root/astara-neutron
 
-- name: set the core_plugins for astara
+- name: set the core_plugins for astara before newton
   shell: sed -i 's|core_plugin = .*|core_plugin = astara_neutron.plugins.ml2_neutron_plugin.Ml2Plugin|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed creates=/etc/astara/core.sed
+  when: openstack_version == stable/mitaka or openstack_version == stable/liberty
 
+- name: set the core_plugins for astara
+  shell: sed -i 's|core_plugin = .*|core_plugin = astara.newton_fix.Ml2Plugin|g' /etc/neutron/neutron.conf; touch /etc/astara/core.sed creates=/etc/astara/core.sed
+  when: openstack_version == stable/newton
+  
 - name: Test for existence of api_extensions_path
   command: grep "api_extensions_path" /etc/neutron/neutron.conf
   register: api_extensions_result

@@ -3,7 +3,8 @@ ubuntu: u1604
 
 #set the version
 #openstack_version: "stable/liberty"
-openstack_version: "stable/mitaka"
+#openstack_version: "stable/mitaka"
+openstack_version: "stable/newton"
 
 #For installing from trunk
 #openstack_version: "HEAD"
